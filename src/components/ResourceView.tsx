@@ -3,29 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, FileText, FileQuestion, Video } from "lucide-react";
 import { Subject } from "./SubjectGrid";
+import { SubjectWithResources } from "@/data/subjects";
+import subjects from "@/data/subjects";
 import { cn } from "@/lib/utils";
-
-// Define the Module type for notes
-interface Module {
-  id: string;
-  name: string;
-  url: string;
-}
-
-// Define the Exam type for PYQs
-interface Exam {
-  id: string;
-  name: string;
-  url: string;
-}
-
-// Define the VideoResource type
-interface VideoResource {
-  id: string;
-  moduleNumber: number;
-  name: string;
-  url: string;
-}
 
 interface ResourceViewProps {
   subject: Subject;
@@ -33,57 +13,9 @@ interface ResourceViewProps {
 }
 
 const ResourceView = ({ subject, onBack }: ResourceViewProps) => {
-  // Mock data for modules
-  const modules: Module[] = [
-    { id: "m1", name: "Module 1", url: "https://example.com/module1" },
-    { id: "m2", name: "Module 2", url: "https://example.com/module2" },
-    { id: "m3", name: "Module 3", url: "https://example.com/module3" },
-    { id: "m4", name: "Module 4", url: "https://example.com/module4" },
-    { id: "m5", name: "Module 5", url: "https://example.com/module5" },
-  ];
-
-  // Mock data for exams
-  const exams: Exam[] = [
-    { id: "cie1", name: "CIE 1", url: "https://example.com/cie1" },
-    { id: "cie2", name: "CIE 2", url: "https://example.com/cie2" },
-    { id: "cie3", name: "CIE 3", url: "https://example.com/cie3" },
-    { id: "see", name: "SEE", url: "https://example.com/see" },
-  ];
-
-  // Mock data for videos
-  const videos: VideoResource[] = [
-    {
-      id: "v1",
-      moduleNumber: 1,
-      name: "Module 1 Overview",
-      url: "https://example.com/video1",
-    },
-    {
-      id: "v2",
-      moduleNumber: 2,
-      name: "Module 2 Overview",
-      url: "https://example.com/video2",
-    },
-    {
-      id: "v3",
-      moduleNumber: 3,
-      name: "Module 3 Overview",
-      url: "https://example.com/video3",
-    },
-    {
-      id: "v4",
-      moduleNumber: 4,
-      name: "Module 4 Overview",
-      url: "https://example.com/video4",
-    },
-    {
-      id: "v5",
-      moduleNumber: 5,
-      name: "Module 5 Overview",
-      url: "https://example.com/video5",
-    },
-  ];
-
+  // Find the full subject data with resources
+  const subjectWithResources = subjects.find(s => s.id === subject.id) as SubjectWithResources;
+  
   // Function to handle resource clicks
   const handleResourceClick = (url: string) => {
     window.open(url, "_blank");
@@ -120,7 +52,7 @@ const ResourceView = ({ subject, onBack }: ResourceViewProps) => {
           </CardHeader>
           <CardContent className="pt-4">
             <div className="space-y-2">
-              {modules.map((module) => (
+              {subjectWithResources.modules.map((module) => (
                 <Button
                   key={module.id}
                   variant="outline"
@@ -147,7 +79,7 @@ const ResourceView = ({ subject, onBack }: ResourceViewProps) => {
           </CardHeader>
           <CardContent className="pt-4">
             <div className="space-y-2">
-              {exams.map((exam) => (
+              {subjectWithResources.exams.map((exam) => (
                 <Button
                   key={exam.id}
                   variant="outline"
@@ -174,7 +106,7 @@ const ResourceView = ({ subject, onBack }: ResourceViewProps) => {
           </CardHeader>
           <CardContent className="pt-4">
             <div className="space-y-2">
-              {videos.map((video) => (
+              {subjectWithResources.videos.map((video) => (
                 <Button
                   key={video.id}
                   variant="outline"
@@ -193,3 +125,4 @@ const ResourceView = ({ subject, onBack }: ResourceViewProps) => {
 };
 
 export default ResourceView;
+

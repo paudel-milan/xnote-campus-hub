@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import SubjectGrid, { Subject } from "@/components/SubjectGrid";
@@ -32,7 +32,7 @@ const Index = () => {
       />
       
       <div className="flex w-full">
-        <SidebarProvider defaultCollapsed={false} className="w-full">
+        <SidebarProvider className="w-full">
           <div className="flex w-full">
             <Sidebar 
               selectedSemester={selectedSemester}
@@ -41,10 +41,6 @@ const Index = () => {
             
             <main className="flex-1 p-6">
               <div className="container mx-auto max-w-6xl">
-                <div className="flex items-center mb-4">
-                  <SidebarTrigger />
-                </div>
-                
                 {selectedSubject ? (
                   <ResourceView 
                     subject={selectedSubject}

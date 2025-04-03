@@ -1,15 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import { 
-  Sidebar as ShadcnSidebar, 
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton
-} from "@/components/ui/sidebar";
 
 const semesters = [
   { id: "1", name: "1st Semester" },
@@ -29,31 +19,25 @@ interface SidebarProps {
 
 const Sidebar = ({ selectedSemester, setSelectedSemester }: SidebarProps) => {
   return (
-    <ShadcnSidebar className="border-r border-gray-200">
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Semesters</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {semesters.map((semester) => (
-                <SidebarMenuItem key={semester.id}>
-                  <SidebarMenuButton
-                    className={`w-full ${
-                      selectedSemester === semester.id
-                        ? "bg-xnote-secondary text-white"
-                        : "hover:bg-gray-100"
-                    }`}
-                    onClick={() => setSelectedSemester(semester.id)}
-                  >
-                    <span>{semester.name}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </ShadcnSidebar>
+    <div className="w-[220px] min-h-[calc(100vh-64px)] bg-white border-r border-gray-200 p-4">
+      <h2 className="font-heading font-medium text-lg mb-4">Semesters</h2>
+      <div className="flex flex-col space-y-2">
+        {semesters.map((semester) => (
+          <Button
+            key={semester.id}
+            className={`w-full justify-start ${
+              selectedSemester === semester.id
+                ? "bg-xnote-secondary text-white"
+                : "bg-transparent text-gray-700 hover:bg-gray-100"
+            }`}
+            variant={selectedSemester === semester.id ? "default" : "ghost"}
+            onClick={() => setSelectedSemester(semester.id)}
+          >
+            <span>{semester.name}</span>
+          </Button>
+        ))}
+      </div>
+    </div>
   );
 };
 

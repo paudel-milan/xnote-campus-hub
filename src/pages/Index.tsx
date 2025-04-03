@@ -1,11 +1,67 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState, useEffect } from "react";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
+import SubjectGrid, { Subject } from "@/components/SubjectGrid";
+import ResourceView from "@/components/ResourceView";
+import subjects from "@/data/subjects";
 
 const Index = () => {
+  // State for selected department and semester
+  const [selectedDepartment, setSelectedDepartment] = useLocalStorage<string>("xnote-department", "cse");
+  const [selectedSemester, setSelectedSemester] = useLocalStorage<string>("xnote-semester", "1");
+  
+  // State for selected subject (when viewing resources)
+  const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+
+  const handleSelectSubject = (subject: Subject) => {
+    setSelectedSubject(subject);
+  };
+
+  const handleBackToSubjects = () => {
+    setSelectedSubject(null);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-xnote-background">
+      <Header 
+        selectedDepartment={selectedDepartment}
+        setSelectedDepartment={setSelectedDepartment}
+      />
+      
+      <div className="flex w-full">
+        <SidebarProvider defaultCollapsed={false} className="w-full">
+          <div className="flex w-full">
+            <Sidebar 
+              selectedSemester={selectedSemester}
+              setSelectedSemester={setSelectedSemester}
+            />
+            
+            <main className="flex-1 p-6">
+              <div className="container mx-auto max-w-6xl">
+                <div className="flex items-center mb-4">
+                  <SidebarTrigger />
+                </div>
+                
+                {selectedSubject ? (
+                  <ResourceView 
+                    subject={selectedSubject}
+                    onBack={handleBackToSubjects}
+                  />
+                ) : (
+                  <SubjectGrid 
+                    subjects={subjects}
+                    selectedDepartment={selectedDepartment}
+                    selectedSemester={selectedSemester}
+                    onSelectSubject={handleSelectSubject}
+                  />
+                )}
+              </div>
+            </main>
+          </div>
+        </SidebarProvider>
       </div>
     </div>
   );

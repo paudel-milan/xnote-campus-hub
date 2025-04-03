@@ -16,6 +16,11 @@ const Index = () => {
   // State for selected subject (when viewing resources)
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
 
+  // Reset selected subject when department or semester changes
+  useEffect(() => {
+    setSelectedSubject(null);
+  }, [selectedDepartment, selectedSemester]);
+
   const handleSelectSubject = (subject: Subject) => {
     setSelectedSubject(subject);
   };
@@ -24,11 +29,21 @@ const Index = () => {
     setSelectedSubject(null);
   };
 
+  // Custom wrapper for setting department with additional logic
+  const handleSetDepartment = (department: string) => {
+    setSelectedDepartment(department);
+  };
+
+  // Custom wrapper for setting semester with additional logic
+  const handleSetSemester = (semester: string) => {
+    setSelectedSemester(semester);
+  };
+
   return (
     <div className="min-h-screen bg-xnote-background">
       <Header 
         selectedDepartment={selectedDepartment}
-        setSelectedDepartment={setSelectedDepartment}
+        setSelectedDepartment={handleSetDepartment}
       />
       
       <div className="flex w-full">
@@ -36,7 +51,7 @@ const Index = () => {
           <div className="flex w-full">
             <Sidebar 
               selectedSemester={selectedSemester}
-              setSelectedSemester={setSelectedSemester}
+              setSelectedSemester={handleSetSemester}
             />
             
             <main className="flex-1 p-6">

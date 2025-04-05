@@ -7,6 +7,7 @@ import Sidebar from "@/components/Sidebar";
 import SubjectGrid, { Subject } from "@/components/SubjectGrid";
 import ResourceView from "@/components/ResourceView";
 import subjects from "@/data/subjects";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   // State for selected department and semester
@@ -15,6 +16,8 @@ const Index = () => {
   
   // State for selected subject (when viewing resources)
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // Reset selected subject when department or semester changes
   useEffect(() => {
@@ -23,6 +26,9 @@ const Index = () => {
 
   const handleSelectSubject = (subject: Subject) => {
     setSelectedSubject(subject);
+    if (isMobile) {
+      setSidebarOpen(false); // Close sidebar when selecting a subject on mobile
+    }
   };
 
   const handleBackToSubjects = () => {
@@ -37,6 +43,9 @@ const Index = () => {
   // Custom wrapper for setting semester with additional logic
   const handleSetSemester = (semester: string) => {
     setSelectedSemester(semester);
+    if (isMobile) {
+      setSidebarOpen(false); // Close sidebar when selecting a semester on mobile
+    }
   };
 
   return (
@@ -47,14 +56,16 @@ const Index = () => {
       />
       
       <div className="flex w-full">
-        <SidebarProvider className="w-full">
+        <SidebarProvider defaultOpen={!isMobile} className="w-full">
           <div className="flex w-full">
             <Sidebar 
               selectedSemester={selectedSemester}
               setSelectedSemester={handleSetSemester}
+              isOpen={sidebarOpen}
+              setIsOpen={setSidebarOpen}
             />
             
-            <main className="flex-1 p-6">
+            <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-x-hidden">
               <div className="container mx-auto max-w-6xl">
                 {selectedSubject ? (
                   <ResourceView 
